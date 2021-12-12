@@ -1,19 +1,23 @@
 #Risk Register REST Server
 #Author Jon Ishaque GMIT Data Representation
 
-from flask import Flask,url_for,request,redirect,abort,jsonify
+from flask import Flask,url_for,request,redirect,abort,jsonify,render_template
 from RisksDAO import RisksDAO
 
-app = Flask(__name__, static_url_path='/', static_folder='staticpages')
+app = Flask(__name__, 
+        static_url_path='',
+        static_folder='staticpages')
 
-
-nextid = 4
 @app.route('/' )#index function
-   
 def index():
-    #redirect(url_for('/login'))
-    return "Hello World"
-   #curl http://127.0.0.1:5000
+    #url_for('static', filename='index.html')
+    return app.send_static_file('index.html')  #(Pieters and Kumar, 2021)
+
+   # return ("balls") 
+    #     url_for('index')
+    #redirect(url_for('index'))
+    #return "Hello World"
+    #curl http://127.0.0.1:5000
 #all risks   
 @app.route('/risks' )
 def getAll():

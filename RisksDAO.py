@@ -4,7 +4,7 @@
 
 #import connector library to enable server to connect to database
 import mysql.connector
- 
+from flask import jsonify
 class RisksDAO:
     rkdb=""
     def __init__(self):
@@ -16,7 +16,7 @@ class RisksDAO:
         print("Connection mode")
 
     def createRisk(self,risk):
-        print (risk)
+        print (jsonify(risk))
         #also create new risk from previousids.
         cursor = self.rkdb.cursor()#think about where to calculate risklevel CS/SS
         #last review not needed on creation
@@ -36,7 +36,9 @@ class RisksDAO:
             risk['Likelihood'],
             risk['Category']
             ]
+        #print(sql)
         #print(values)
+        #return risk["Risk_Description"]
         cursor.execute(sql,values)
         #commit triggers the work on database
         self.rkdb.commit#
@@ -44,13 +46,12 @@ class RisksDAO:
     
     def UpdateRisk(self,risk): #update the risk values which are allowed to be updated.
         cursor = self.rkdb.cursor()
-        sql="UPDATE risks SET Risk_Description = %s ,RiskLevel = %s,\
+        sql="UPDATE risks SET Risk_Description = %s,RiskLevel = %s,\
             Owner = %s, Next_Review = %s, Last_Review=%s,\
             Review_Frequency = %s, RiskArea = %s,Man_Ctrs = %s,\
             Impact = %s,Likelihood = %s WHERE id=%s;"
           #https://stackoverflow.com/questions/1136437/inserting-a-python-datetime-datetime-object-into-mysql#
-        values = [
-            
+        values = [            
             risk['Risk_Description'],
             risk['RiskLevel'],
             risk['Owner'],
@@ -60,13 +61,14 @@ class RisksDAO:
             risk['RiskArea'],
             risk['Man_Ctrs'],
             risk['Impact'],
-            risk['Likelihood'],
+            risk['Likelihood'],  
             risk['id']
+            
             ]
-        print(sql)
-        print(values)
+ 
         cursor.execute(sql,values)
-        rkdb.commit()
+        self.rkdb.commit()
+        return("risk updated")
 
    
     #function to get all risks due in the next 30 days
@@ -83,22 +85,23 @@ class RisksDAO:
         return returnArray
     
     #function to get risk by id, to show in html for editing
-    def findByRiskID(self,risk):
+    def findByRiskID(self,id):
         cursor = self.rkdb.cursor()
-        sql="SELECT * FROM risks WHERE id=%s"
-        values=[risk['id']]
+        sql="SELECT * FROM risks WHERE id=(%s)"
+        values=(id,) #validation check here
+        print (sql)
         cursor.execute(sql,values)
         risk = cursor.fetchone()
 
         returnRisk=[]#return empty if not found and deal with empty array.
         returnRisk.append(self.CovertToDict(risk))#covernt to dictionary
-        print (returnRisk)
+        #print (returnRisk)
         return returnRisk
     
 
 
-    def DeleteRisk(self,risk):
-        values=[risk['id']] #ge risk id out of dict
+    def DeleteRisk(self,id):
+        values=(id,) 
         cursor = self.rkdb.cursor()
         sql = "DELETE FROM risks WHERE id=(%s)"
       

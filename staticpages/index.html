@@ -1,0 +1,138 @@
+<Html>
+    <head>
+        <title>Risk Register</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+        </script>
+    </head>
+<body>
+    <h1>Risks</h1>
+    
+
+    <div> <button id="CreateEdit" onclick="showCreate()">Create/Edit Risk</button></div>
+    <div> <button id="Show" onclick=loadRisks()">ShowRisk</button></div>
+    <div id="">
+        <table class=~"table" id="risklist">
+            <tr >
+                <td>Risk ID</td>Category<td>Description</td><td>Risk Level</td><td>Next Review</td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="CreateRisks">
+        <table class="table" id="risklist" style="display:none">
+            <tr id="" >
+                <tr>
+                    <td>Risk ID</td><td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>Category</td><td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>Risk Area</td><td><input type="text"></td>
+                </tr>  
+                <tr>
+                    <td>Description</td><td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>Owner</td><td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>Impact</td><td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>Likelihood</td><td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>Next Review</td><td><input type="date"></td>
+                </tr>
+                <tr>
+                    <td>Man_Ctrs</td><td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>Archive</td><td><input type="checkbox">
+                </tr>
+                <tr>
+                    <td><button id="CreateEditBtn"></button></td>
+                    </tr>
+            </tr>
+
+        </table>
+    </div>
+    <div id="ListRisks">
+        <table id="RisksTable" class="table">
+            <tr>
+                <th>Risk ID</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Owner</th>
+                <th>Risk level</th>
+                <th>Next Review</th>
+                <th></th>
+            </tr>
+            
+        </table>
+
+
+    </div>
+    <script>
+        function loadRisks(){
+            //ajax call getAll
+            $.ajax({
+                url:'http://127.0.0.1:5000/risks',
+                method: 'GET',
+                dataType:'JSON',
+                success:function(returnArray){
+                    console.log(returnArray)
+                        for (risk of returnArray){
+                            addRisktoTable(risk);
+                    }
+                },
+                error:function(xhr,status,error){
+                    console.log("Error:"+ error + "Code: "+ status)
+                }
+            })
+
+            risk = {
+
+                id:123,
+                rid:"C001",
+                Category:"Schools",
+                Risk_Description:"first risk",
+                Owner:"DFET",
+                RiskLevel:"Severe",
+                Next_Review:"01/01/2022",
+                
+                }
+            //addRisktoTable(risk);
+            
+
+            }
+        function addRisktoTable(risk){
+            console.log("Got here")
+            tableElem = document.getElementById("RisksTable")
+            rowElem = tableElem.insertRow(-1)
+            rowElem.setAttribute('id',risk.id)
+            cell1=rowElem.insertCell(0)
+            cell1.innerHTML = risk.rid
+            cell2=rowElem.insertCell(1)
+            cell2.innerHTML = risk.Category
+            cell3=rowElem.insertCell(2)
+            cell3.innerHTML = risk.Risk_Description
+            cell4=rowElem.insertCell(3)
+            cell4.innerHTML = risk.Owner
+            cell5=rowElem.insertCell(4)
+            cell5.innerHTML = risk.RiskLevel
+            cell6=rowElem.insertCell(5)
+            cell6.innerHTML = risk.Next_Review
+            cell7=rowElem.insertCell(6)
+            cell7.innerHTML = '<button onclick="showUpdate(this)">Update</button>'
+            cell8=rowElem.insertCell(7)
+            cell8.innerHTML = '<button onclick="doDelete(this)">Delete</button>'
+        }
+    loadRisks();
+    </script>
+</BODY>
+
+</HTML>
