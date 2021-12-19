@@ -1,67 +1,109 @@
 <Html>
     <head>
+        <meta http-equiv='content-type' content='text/html; charset=utf-8'>      
+        <link href='risksStyle.css' rel='stylesheet' type='text/css'>
         <title>Risk Register</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+        <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'
+        integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'>
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'>
         </script>
     </head>
+    
 <body>
-    <h1>Risks</h1>
+    <h1>MyOrg Risk Register</h1>
     
 
-    <div> <button id="CreateEdit" onclick="showCreate()">Create/Edit Risk</button></div>
-    <div> <button id="Show" onclick=loadRisks()">ShowRisk</button></div>
-    <div id="">
-        <table class=~"table" id="risklist">
-            <tr >
-                <td>Risk ID</td>Category<td>Description</td><td>Risk Level</td><td>Next Review</td>
-            </tr>
-        </table>
+    <div> <table class='tables'  id='navtable' cellpadding=5>
+        <tr>
+            <td><button id='show' onclick='showViewAll()'>Show Risks</button>
+            </td>
+            <td><button id='showCreateButton' onclick='showCreate()'>Create/Edit Risk</button></td>
+            
+            <td><button id='showArchive' onclick='showArchive()'>Archive</button>
+            </td>
+            <td><button id='showFindRisk' onclick='showCreate()'>Find Risk</button></td>
+            <td><button id='showExportRisks' onclick='showCreate()'>Export Risk</button></td>
+        </tr>
+    </table>
+        
+    </div>
+    </br>
+    <div>
+        
     </div>
 
-    <div id="CreateRisks">
-        <table class="table" id="risklist" style="display:none">
-            <tr id="" >
+    <div  id='CreateUpdateRisks'>
+        create risksasdfss
+        <table border = 1 class='tables' id='CreateUpdateForm' style='display:none'>
+            <tr>
+                <input type='hidden' name='id' value =''>
                 <tr>
-                    <td>Risk ID</td><td><input type="text"></td>
+                    <td>Risk ID: </td><td><input id ='rid' Name ='rid' type='text'></td>
                 </tr>
                 <tr>
-                    <td>Category</td><td><input type="text"></td>
+                    <td>Category: </td><td><input id ='Category' Name='Category' type='text'></td>
                 </tr>
                 <tr>
-                    <td>Risk Area</td><td><input type="text"></td>
+                    <td>RiskArea: </td><td><input id ='RiskArea'name='RiskArea' type='text'></td>
                 </tr>  
                 <tr>
-                    <td>Description</td><td><input type="text"></td>
+                    <td>Description: </td><td><input id ='Risk_Description' name='Risk_Description' type='text'></td>
+                </tr>
+                
+                <tr>
+                    <td>Owner: </td><td><input id ='Owner'name='Owner' type='text'></td>
                 </tr>
                 <tr>
-                    <td>Owner</td><td><input type="text"></td>
+                    <td>Impact: </td><td><select id ='Impact' name='Impact' >
+                        <option value='1'>Minor</option>
+                        <option value='2'>Moderate</option>
+                        <option value='3'>Major</option>
+                        <option value='4'>Severe</option>
+                        
+                      </select>
+                    </td>
                 </tr>
                 <tr>
-                    <td>Impact</td><td><input type="checkbox"></td>
+                    <td>Likelihood: </td><td><select id ='Likelihood' name='Likelihood' >
+                        <option value='1'>Low</option>
+                        <option value='2'>Medium</option>
+                        <option value='3'>High</option>
+                        <option value='4'>Very High</option>
+                    </td>
+                </tr>
+                <tr id='RwRiskLevel'>
+                    <td>Risk Level: </td>
+                    <td>
+                        <input id ='RiskLevel' name ='RiskLevel' type='text'></td>
+                </tr>
+                <tr  id='RwReview_Frequency'>
+                    <td>Review Frequency: </td><td><input id ='Review_Frequency' name ='Review_Frequency' type='text'></td>
+                </tr>
+                <tr  >
+                    <td>Last Review: </td><td><input id =''name ='' type='date'></td>
                 </tr>
                 <tr>
-                    <td>Likelihood</td><td><input type="text"></td>
+                    <td>Last Review: </td><td><input id='Last_Review' name='Last_Review' type='date'></td>
                 </tr>
                 <tr>
-                    <td>Next Review</td><td><input type="date"></td>
+                    <td>Next Review: </td><td><input id='Next_Review' name='Next_Review' type='date'></td>
                 </tr>
                 <tr>
-                    <td>Man_Ctrs</td><td><input type="text"></td>
+                    <td>Managment controls: </td><td><input id=='Man_Ctrs' name='Man_Ctrs' type='text'></td>
                 </tr>
-                <tr>
-                    <td>Archive</td><td><input type="checkbox">
+                <tr  id='RwArchive' >
+                    <td>Archive</td><td><input id = 'Archive' name='Archive' type='checkbox'>
                 </tr>
-                <tr>
-                    <td><button id="CreateEditBtn"></button></td>
+                <tr><td><button id='UpdatetBtn' onClick ='doUpdate()'>Update</button></td>
+                    <td><button id='CreateBtn' onClick='doCreate()'>Create</button></td>
                     </tr>
             </tr>
 
         </table>
     </div>
-    <div id="ListRisks">
-        <table id="RisksTable" class="table">
+    <div class='tables' id='ListRisks'>
+
+        <table id='RisksTable' class='table' id='risktable'>
             <tr>
                 <th>Risk ID</th>
                 <th>Category</th>
@@ -77,61 +119,259 @@
 
     </div>
     <script>
-        function loadRisks(){
-            //ajax call getAll
-            $.ajax({
-                url:'http://127.0.0.1:5000/risks',
-                method: 'GET',
-                dataType:'JSON',
-                success:function(returnArray){
-                    console.log(returnArray)
-                        for (risk of returnArray){
-                            addRisktoTable(risk);
+    loadRisks()
+    function showCreate(){  
+        console.log('in show create')
+        
+        document.getElementById('showCreateButton').style.display = 'none'
+        document.getElementById('RisksTable').style.display = 'none'
+        //document.getElementById('RwReview_Frequency').style.display = 'none'
+        //document.getElementById('RwArchive').style.display = 'none'
+        //document.getElementById('RwLast_Review').style.display = 'none'
+        //document.getElementById('RwRiskLevel').style.display = 'none'
+        document.getElementById('CreateUpdateForm').style.display = 'block'
+        //document.getElementById('createLabel').style.display = 'inline'
+        // document.getElementById('updateLabel').style.display = 'none'
+
+        //document.getElementById('doCreateBtn').style.display = 'block'
+        //document.getElementById('doUpdateBtn').style.display = 'none'
+    }
+
+    
+    function showUpdate(){
+        document.getElementById('RisksTable').style.display = 'none'
+        //document.getElementById('RwReview_Frequency').style.display = 'block'
+        //document.getElementById('RwArchive').style.display = 'block'
+        //document.getElementById('RwLast_Review').style.display = 'block'
+        //document.getElementById('RwRiskLevel').style.display = 'block'
+        document.getElementById('CreateUpdateForm').style.display = 'block'
+        //document.getElementById('showCreateButton').style.display = 'none'
+        //document.getElementById('RisksTable').style.display = 'none'
+        //document.getElementById('CreateUpdateForm').style.display = 'block'
+    }
+function formatdt(date) { //(js date to string yyyy-mm-dd Code Example, 2021)
+  date = new Date(date);
+
+  var day = ('0' + date.getDate()).slice(-2);
+  var month = ('0' + (date.getMonth() + 1)).slice(-2);
+  var year = date.getFullYear();
+
+  return year + '-' + month + '-' + day;
+}
+    function getRisk(id){
+        //find table
+        //var tableElement = document.getElementById('RisksTable');
+        //the whole row is the parent of the button which is TD and the parent
+        //TD which is TR - the row
+        //var rowElement = r.parentNode.parentNode
+        //console.log('RE:' + rowElement.rowIndex);
+        //var index = rowElement.rowIndex;
+        //id = rowElement.getAttribute('id');
+        console.log('in getriskid: ' + id);
+        $.ajax({
+            url:'/risks/'+ id,
+            method: 'GET',
+            dataType:'JSON',
+            success:function(returnArray){
+                //console.log("Return:" + returnArray)
+                for (risk of returnArray){
+                   //return(risk);
+                   var form = document.getElementById('CreateUpdateForm')
+                    console.log(risk.rid);
+                    form.querySelector("input[name='id']").value=risk.id
+                    form.querySelector("input[name='rid']").value=risk.rid
+                    form.querySelector("input[name='Category']").value=risk.Category 
+                    form.querySelector("input[name='RiskLevel']").value=risk.RiskLevel 
+                    form.querySelector("input[name='Owner']").value =risk.Owner 
+                    form.querySelector("input[name='Next_Review']").value=formatdt(risk.Next_Review)
+                    document.getElementById('Last_Review').value=formatdt(risk.Last_Review )
+                    document.getElementById('Review_Frequency').value=risk.Review_Frequency 
+                    form.querySelector("input[name='RiskArea']").value=risk.RiskArea  
+                    document.getElementById('Likelihood').value=risk.Likelihood
+                    document.getElementById('Impact').value=risk.Impact     
+                    //document.getElementById('Archive').value=risk.Archive  
                     }
                 },
-                error:function(xhr,status,error){
-                    console.log("Error:"+ error + "Code: "+ status)
+            error:function(xhm,status,error){
+                console.log(error)
+            }
+        })
+    }
+
+    function getUpdate(r){
+        console.log('in show update')
+        //find table
+        var tableElement = document.getElementById('RisksTable');
+        //the whole row is the parent of the button which is TD and the parent
+        //TD which is TR - the row
+        var rowElement = r.parentNode.parentNode;
+        console.log('RE:' + rowElement.rowIndex);
+        var index = rowElement.rowIndex;
+        id = rowElement.getAttribute('id');
+        console.log('ID: ' + id);
+        risk=getRisk(id);
+        console.log(risk);
+        
+        ////////////////////
+        tableElem = document.getElementById('RisksTable')
+        rowElem = tableElem.insertRow(-1)
+        //rowElem.setAttribute('id',risk.id)
+        showUpdate()
+
+        
+
+    }
+    function doUpdate(){
+        risk = getRiskFromForm()
+        $.ajax({
+            url:'/risks/'+risk.id,
+            data:JSON.stringify(risk),
+            method: 'PUT',
+            dataType:'JSON',
+            contentType: 'application/json; charset=utf-8',
+            success:function(result){
+                console.log('update risk here'+ result)
+                addRisktoTable(risk);
+                showViewAll()
+                },
+            error:function(xhr,status,error){
+                console.log('Error:'+ error + 'Code: '+ status)
+            }
+        })     
+    }
+    function doCreate() {
+        console.log('docreate')
+        risk = getRiskFromForm()
+        $.ajax({
+            url:'/risks',
+            data:JSON.stringify(risk),
+            method: 'POST',
+            dataType:'JSON',
+            contentType: 'application/json; charset=utf-8',
+            success:function(result){
+                console.log('add risk here'+ result)
+                addRisktoTable(risk);
+                showViewAll()
+                },
+            error:function(xhr,status,error){
+                console.log('Error:'+ error + 'Code: '+ status)
+            }
+        })                   
+    }
+    function doDelete(r){
+        //find table
+        var tableElement = document.getElementById('RisksTable');
+        //the whole row is the parent of the button which is TD and the parent
+        //TD which is TR - the row
+        var rowElement = r.parentNode.parentNode
+        console.log('RE:' + rowElement.rowIndex);
+        var index = rowElement.rowIndex;
+        id = rowElement.getAttribute('id');
+        console.log('ID: ' + id);
+        $.ajax({
+            url:'/risks/'+id,
+            method:'DELETE',
+            success:function(result){
+                tableElement.deleteRow(index);   
+            },
+            error:function(xhm,status,error){
+                console.log(error)
+            }
+        })
+        
+
+
+    }
+    function getRiskFromForm(){
+         //function to get risks from form by each element
+        var form = document.getElementById('CreateUpdateForm')
+        var risk = {}
+
+        console.log("CALLER is"+ getRiskFromForm.caller.name)
+        //get more data if caller is update
+        if (getRiskFromForm.caller.name ='doUpdate' ) {
+            //risk.Archive = form.querySelector("input[name='Archive']"").value
+            risk.id = form.querySelector("input[name='id']").value
+            risk.NextReview = form.querySelector("input[name='Next_Review']").value
+        }
+       
+        risk.rid = form.querySelector("input[name='rid']").value
+        risk.Category =  form.querySelector("input[name='Category']").value
+        risk.RiskArea = form.querySelector("input[name='RiskArea']").value
+        risk.Risk_Description =  form.querySelector("input[name='Risk_Description']").value
+        risk.Owner = form.querySelector("input[name='Owner']").value
+        risk.Review_Frequency = 'daily'
+        risk.Impact = form.querySelector("select[name='Impact']").value
+        risk.Likelihood = form.querySelector("select[name='Likelihood']").value
+        risk.Man_Ctrs = form.querySelector("input[name='Man_Ctrs']").value
+        
+        console.log(JSON.stringify(risk))
+        return risk   
+    }
+    
+    function showViewAll() {
+        //hide display elements
+        document.getElementById('showCreateButton').style.display = 'block'
+        document.getElementById('RisksTable').style.display = 'block'
+        document.getElementById('CreateUpdateForm').style.display = 'none'
+        //call load risks 
+        
+    }
+    function loadRisks(){
+        //ajax call getAll
+        $.ajax({
+            url:'http://127.0.0.1:5000/risks',
+            method: 'GET',
+            dataType:'JSON',
+            success:function(returnArray){
+                console.log(returnArray)
+                    for (risk of returnArray){
+                        addRisktoTable(risk);
                 }
-            })
+            },
+            error:function(xhr,status,error){
+                console.log('Error:'+ error + 'Code: '+ status)
+            }
+        })
+            //local risk for debugging
+        risk = {
 
-            risk = {
-
-                id:123,
-                rid:"C001",
-                Category:"Schools",
-                Risk_Description:"first risk",
-                Owner:"DFET",
-                RiskLevel:"Severe",
-                Next_Review:"01/01/2022",
+            id:123,
+            rid:'C001',
+            Category:'Schools',
+            Risk_Description:'first risk',
+            Owner:'DFET',
+            RiskLevel:'Severe',
+            Next_Review:'01/01/2022',
                 
-                }
-            //addRisktoTable(risk);
+            }
+         
             
 
-            }
-        function addRisktoTable(risk){
-            console.log("Got here")
-            tableElem = document.getElementById("RisksTable")
-            rowElem = tableElem.insertRow(-1)
-            rowElem.setAttribute('id',risk.id)
-            cell1=rowElem.insertCell(0)
-            cell1.innerHTML = risk.rid
-            cell2=rowElem.insertCell(1)
-            cell2.innerHTML = risk.Category
-            cell3=rowElem.insertCell(2)
-            cell3.innerHTML = risk.Risk_Description
-            cell4=rowElem.insertCell(3)
-            cell4.innerHTML = risk.Owner
-            cell5=rowElem.insertCell(4)
-            cell5.innerHTML = risk.RiskLevel
-            cell6=rowElem.insertCell(5)
-            cell6.innerHTML = risk.Next_Review
-            cell7=rowElem.insertCell(6)
-            cell7.innerHTML = '<button onclick="showUpdate(this)">Update</button>'
-            cell8=rowElem.insertCell(7)
-            cell8.innerHTML = '<button onclick="doDelete(this)">Delete</button>'
         }
-    loadRisks();
+    function addRisktoTable(risk){
+        console.log('ad_RisktoTable: ' + risk.rid)
+        tableElem = document.getElementById('RisksTable')
+        rowElem = tableElem.insertRow(-1)
+        rowElem.setAttribute('id',risk.id)
+        cell1=rowElem.insertCell(0)
+        cell1.innerHTML = risk.rid
+        cell2=rowElem.insertCell(1)
+        cell2.innerHTML = risk.Category
+        cell3=rowElem.insertCell(2)
+        cell3.innerHTML = risk.Risk_Description
+        cell4=rowElem.insertCell(3)
+        cell4.innerHTML = risk.Owner
+        cell5=rowElem.insertCell(4)
+        cell5.innerHTML = risk.RiskLevel
+        cell6=rowElem.insertCell(5)
+        cell6.innerHTML = risk.Next_Review
+        cell7=rowElem.insertCell(6)
+        cell7.innerHTML = "<button onclick='getUpdate(this)'>Update</button>"
+        cell8=rowElem.insertCell(7)
+        cell8.innerHTML = "<button onclick='doDelete(this)'>Delete</button>"
+    }
+    showViewAll();
     </script>
 </BODY>
 
