@@ -1,44 +1,50 @@
 <Html>
     <head>
         <meta http-equiv='content-type' content='text/html; charset=utf-8'>      
-        <link href='risksStyle.css' rel='stylesheet' type='text/css'>
+        
         <title>Risk Register</title>
-        <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'
-        integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'>
-        <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'>
+        <link rel="stylesheet" type="text/css" href="risksStyle.css" />     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'>
         </script>
     </head>
     
 <body>
     <h1>MyOrg Risk Register</h1>
-    
-
-    <div> <table class='tables'  id='navtable' cellpadding=5>
+   
+        <table  class='nav-table' id='nav-table'  >
         <tr>
-            <td><button id='show' onclick='showViewAll()'>Show Risks</button>
+            <td>
+                <button  class='nav-button' id='showRisksBtn' onclick='showViewAll()'>Show Risks</button>
             </td>
-            <td><button id='showCreateButton' onclick='showCreate()'>Create/Edit Risk</button></td>
+            <td>
+                <button  class='nav-button' id='showCreateBtn' onclick='showCreate()'>Create/Edit Risk</button></td>
             
-            <td><button id='showArchive' onclick='showArchive()'>Archive</button>
+            <td>
+                <button  class='nav-button' id='showArchiveBtn' onclick='showArchive()'>Archive</button>
             </td>
-            <td><button id='showFindRisk' onclick='showCreate()'>Find Risk</button></td>
-            <td><button id='showExportRisks' onclick='showCreate()'>Export Risk</button></td>
+            <td>
+                <button  class='nav-button' id='showFindRiskBtn' onclick='showCreate()'>Find Risk</button></td>
+            <td>
+                <button  class='nav-button' id='showExportRisksBtn' onclick='showCreate()'>Export Risk</button></td>
         </tr>
     </table>
+  
         
-    </div>
+    
     </br>
-    <div>
-        
-    </div>
+   
 
     <div  id='CreateUpdateRisks'>
         create risksasdfss
-        <table border = 1 class='tables' id='CreateUpdateForm' style='display:none'>
+        <table class='tables' id='CreateUpdateForm' style='display:none'>
+            <colgroup>
+                <col span="1" style="width: 30%;">
+                <col span="1" style="width: 70%;">                
+            </colgroup>
+    
             <tr>
                 <input type='hidden' name='id' value =''>
                 <tr>
-                    <td>Risk ID: </td><td><input id ='rid' Name ='rid' type='text'></td>
+                    <td>Risk ID: </td><td width='50%'   ><input id ='rid' Name ='rid' type='text'></td>
                 </tr>
                 <tr>
                     <td>Category: </td><td><input id ='Category' Name='Category' type='text'></td>
@@ -47,7 +53,7 @@
                     <td>RiskArea: </td><td><input id ='RiskArea'name='RiskArea' type='text'></td>
                 </tr>  
                 <tr>
-                    <td>Description: </td><td><input id ='Risk_Description' name='Risk_Description' type='text'></td>
+                    <td>Description: </td><td><textarea id ='Risk_Description' name='Risk_Description'  ></textarea></td>
                 </tr>
                 
                 <tr>
@@ -79,9 +85,7 @@
                 <tr  id='RwReview_Frequency'>
                     <td>Review Frequency: </td><td><input id ='Review_Frequency' name ='Review_Frequency' type='text'></td>
                 </tr>
-                <tr  >
-                    <td>Last Review: </td><td><input id =''name ='' type='date'></td>
-                </tr>
+             
                 <tr>
                     <td>Last Review: </td><td><input id='Last_Review' name='Last_Review' type='date'></td>
                 </tr>
@@ -94,8 +98,8 @@
                 <tr  id='RwArchive' >
                     <td>Archive</td><td><input id = 'Archive' name='Archive' type='checkbox'>
                 </tr>
-                <tr><td><button id='UpdatetBtn' onClick ='doUpdate()'>Update</button></td>
-                    <td><button id='CreateBtn' onClick='doCreate()'>Create</button></td>
+                <tr><td><button class='btnSmall' id='UpdatetBtn' onClick ='doUpdate()'>Update</button></td>
+                    <td><button class='btnSmall' id='CreateBtn' onClick='doCreate()'>Create</button></td>
                     </tr>
             </tr>
 
@@ -122,36 +126,44 @@
     loadRisks()
     function showCreate(){  
         console.log('in show create')
+        //show view nav grid
+        document.getElementById('showRisksBtn').style.background='#0f8d92';
+        document.getElementById('showCreateBtn').style.background='#426d6a';
+        document.getElementById('showArchiveBtn').style.background='#0f8d92';
+        document.getElementById('showFindRiskBtn').style.background='#0f8d92';
+        document.getElementById('showExportRisksBtn').style.background='#0f8d92';
         
-        document.getElementById('showCreateButton').style.display = 'none'
         document.getElementById('RisksTable').style.display = 'none'
-        //document.getElementById('RwReview_Frequency').style.display = 'none'
-        //document.getElementById('RwArchive').style.display = 'none'
-        //document.getElementById('RwLast_Review').style.display = 'none'
-        //document.getElementById('RwRiskLevel').style.display = 'none'
         document.getElementById('CreateUpdateForm').style.display = 'block'
-        //document.getElementById('createLabel').style.display = 'inline'
-        // document.getElementById('updateLabel').style.display = 'none'
-
-        //document.getElementById('doCreateBtn').style.display = 'block'
-        //document.getElementById('doUpdateBtn').style.display = 'none'
     }
-
     
     function showUpdate(){
-        document.getElementById('RisksTable').style.display = 'none'
-        //document.getElementById('RwReview_Frequency').style.display = 'block'
-        //document.getElementById('RwArchive').style.display = 'block'
-        //document.getElementById('RwLast_Review').style.display = 'block'
-        //document.getElementById('RwRiskLevel').style.display = 'block'
+        //show view nav grid
+        document.getElementById('showRisksBtn').style.background='#0f8d92';
+        document.getElementById('showCreateBtn').style.background='#426d6a';
+        document.getElementById('showArchiveBtn').style.background='#0f8d92';
+        document.getElementById('showFindRiskBtn').style.background='#0f8d92';
+        document.getElementById('showExportRisksBtn').style.background='#0f8d92';
+        
+        document.getElementById('RisksTable').style.display = 'none'        
         document.getElementById('CreateUpdateForm').style.display = 'block'
-        //document.getElementById('showCreateButton').style.display = 'none'
-        //document.getElementById('RisksTable').style.display = 'none'
-        //document.getElementById('CreateUpdateForm').style.display = 'block'
     }
-function formatdt(date) { //(js date to string yyyy-mm-dd Code Example, 2021)
-  date = new Date(date);
 
+    function showViewAll() {   
+        //show view nav grid
+        document.getElementById('showRisksBtn').style.background='#426d6a';
+        document.getElementById('showCreateBtn').style.background='#0f8d92';
+        document.getElementById('showArchiveBtn').style.background='#0f8d92';
+        document.getElementById('showFindRiskBtn').style.background='#0f8d92';
+        document.getElementById('showExportRisksBtn').style.background='#0f8d92';
+
+        document.getElementById('RisksTable').style.display = 'block'
+        document.getElementById('CreateUpdateForm').style.display = 'none'
+        //call load risks 
+        
+    }
+function formatdt(date) { //This funciotn lifted from: (js date to string yyyy-mm-dd Code Example, 2021)
+  date = new Date(date);
   var day = ('0' + date.getDate()).slice(-2);
   var month = ('0' + (date.getMonth() + 1)).slice(-2);
   var year = date.getFullYear();
@@ -298,7 +310,7 @@ function formatdt(date) { //(js date to string yyyy-mm-dd Code Example, 2021)
         risk.rid = form.querySelector("input[name='rid']").value
         risk.Category =  form.querySelector("input[name='Category']").value
         risk.RiskArea = form.querySelector("input[name='RiskArea']").value
-        risk.Risk_Description =  form.querySelector("input[name='Risk_Description']").value
+        risk.Risk_Description =  form.querySelector("textarea[name='Risk_Description']").value
         risk.Owner = form.querySelector("input[name='Owner']").value
         risk.Review_Frequency = 'daily'
         risk.Impact = form.querySelector("select[name='Impact']").value
@@ -309,14 +321,7 @@ function formatdt(date) { //(js date to string yyyy-mm-dd Code Example, 2021)
         return risk   
     }
     
-    function showViewAll() {
-        //hide display elements
-        document.getElementById('showCreateButton').style.display = 'block'
-        document.getElementById('RisksTable').style.display = 'block'
-        document.getElementById('CreateUpdateForm').style.display = 'none'
-        //call load risks 
-        
-    }
+   
     function loadRisks(){
         //ajax call getAll
         $.ajax({
@@ -365,11 +370,11 @@ function formatdt(date) { //(js date to string yyyy-mm-dd Code Example, 2021)
         cell5=rowElem.insertCell(4)
         cell5.innerHTML = risk.RiskLevel
         cell6=rowElem.insertCell(5)
-        cell6.innerHTML = risk.Next_Review
+        cell6.innerHTML = formatdt(risk.Next_Review)
         cell7=rowElem.insertCell(6)
-        cell7.innerHTML = "<button onclick='getUpdate(this)'>Update</button>"
+        cell7.innerHTML = "<button  class='btnSmall' onclick='getUpdate(this)'>Update</button>"
         cell8=rowElem.insertCell(7)
-        cell8.innerHTML = "<button onclick='doDelete(this)'>Delete</button>"
+        cell8.innerHTML = "<button  class='btnSmall' onclick='doDelete(this)'>Delete</button>"
     }
     showViewAll();
     </script>
