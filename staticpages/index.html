@@ -17,12 +17,9 @@
             </td>
             <td>
                 <button  class='nav-button' id='showCreateBtn' onclick='showCreate()'>Create/Edit Risk</button></td>
-            
             <td>
                 <button  class='nav-button' id='showArchiveBtn' onclick='showArchive()'>Archive</button>
             </td>
-            <td>
-                <button  class='nav-button' id='showFindRiskBtn' onclick='showCreate()'>Find Risk</button></td>
             <td>
                 <button  class='nav-button' id='showExportRisksBtn' onclick='showCreate()'>Export Risk</button></td>
         </tr>
@@ -34,28 +31,34 @@
    
 
     <div  id='CreateUpdateRisks'>
-        create risksasdfss
+        
+        <!--HTML content for risk creation and risk update-->
+ 
         <table class='tables' id='CreateUpdateForm' style='display:none'>
-            <colgroup>
-                <col span="1" style="width: 30%;">
-                <col span="1" style="width: 70%;">                
-            </colgroup>
-    
-            <tr>
-                <input type='hidden' name='id' value =''>
-                <tr>
-                    <td>Risk ID: </td><td width='50%'   ><input id ='rid' Name ='rid' type='text'></td>
+     
+            
+                
+                <tr id='Rwrid'>
+                    <td id=lblrid>Risk ID: </td>
+                    <td>
+                        <!--hidden id attribute for risk update-->
+                        <input type='hidden' name='id' value =''>
+                        <input id ='rid' Name ='rid' type='text' tabindex="-1" >
+                    </td>
                 </tr>
                 <tr>
-                    <td>Category: </td><td><input id ='Category' Name='Category' type='text'></td>
+                    <td>Category: </td>
+                    <td><select id ='Category_id' Name='Category_id' type='text'><input id ='category' Name ='category' type='text' tabindex="-1" >
+                    </td>
                 </tr>
                 <tr>
-                    <td>RiskArea: </td><td><input id ='RiskArea'name='RiskArea' type='text'></td>
+                    <td>RiskArea: </td><td><input id ='RiskArea' name='RiskArea' type='text'>
+                    </td>
                 </tr>  
                 <tr>
-                    <td>Description: </td><td><textarea id ='Risk_Description' name='Risk_Description'  ></textarea></td>
+                    <td>Description: </td><td><textarea id ='Risk_Description' name='Risk_Description' ></textarea>
+                    </td>
                 </tr>
-                
                 <tr>
                     <td>Owner: </td><td><input id ='Owner'name='Owner' type='text'></td>
                 </tr>
@@ -80,7 +83,7 @@
                 <tr id='RwRiskLevel'>
                     <td>Risk Level: </td>
                     <td>
-                        <input id ='RiskLevel' name ='RiskLevel' type='text'></td>
+                        <input id ='RiskLevel' name ='RiskLevel' type='text' tabindex="-1" ></td>
                 </tr>
                 <tr  id='RwReview_Frequency'>
                     <td>Review Frequency: </td><td><input id ='Review_Frequency' name ='Review_Frequency' type='text'></td>
@@ -93,22 +96,25 @@
                     <td>Next Review: </td><td><input id='Next_Review' name='Next_Review' type='date'></td>
                 </tr>
                 <tr>
-                    <td>Managment controls: </td><td><input id=='Man_Ctrs' name='Man_Ctrs' type='text'></td>
+                    <td>Managment controls: </td><td><textarea id ='Man_Ctrs' name='Man_Ctrs' ></textarea>
+                    </td>
                 </tr>
                 <tr  id='RwArchive' >
-                    <td>Archive</td><td><input id = 'Archive' name='Archive' type='checkbox'>
+                    <td>Archive</td><td><input  id = 'Archive' name='Archive' type='checkbox'>
                 </tr>
                 <tr><td><button class='btnSmall' id='UpdatetBtn' onClick ='doUpdate()'>Update</button></td>
                     <td><button class='btnSmall' id='CreateBtn' onClick='doCreate()'>Create</button></td>
                     </tr>
             </tr>
-
         </table>
     </div>
-    <div class='tables' id='ListRisks'>
-
-        <table id='RisksTable' class='table' id='risktable'>
+    <div class='' id='ListRisks'>
+        <!--table template to show all risks-->
+        <table  class='tables' id='risksTable'>
             <tr>
+                <tr>
+                    <th colspan='7' id='RisksHeader'>Current Risks</th>
+                </tr>
                 <th>Risk ID</th>
                 <th>Category</th>
                 <th>Description</th>
@@ -119,88 +125,164 @@
             </tr>
             
         </table>
-
-
     </div>
+    <div class='' id='ListArchiveRisks'>
+        <!--table template to show archive risks-->
+        <table class='tables' id='archiveTable'>
+            <tr>
+                <tr>
+                    <th colspan='6' id='RisksHeader'>Archived Risks</th>
+                </tr>
+                <th>Risk ID</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Owner</th>
+                <th>Risk level</th>
+                <th>Next Review</th>
+                <th></th>
+            </tr>
+        </table>
+    </div>
+
+
     <script>
     loadRisks()
+     //Show/hide content related to risk create
     function showCreate(){  
         console.log('in show create')
         //show view nav grid
         document.getElementById('showRisksBtn').style.background='#0f8d92';
         document.getElementById('showCreateBtn').style.background='#426d6a';
         document.getElementById('showArchiveBtn').style.background='#0f8d92';
-        document.getElementById('showFindRiskBtn').style.background='#0f8d92';
         document.getElementById('showExportRisksBtn').style.background='#0f8d92';
-        
-        document.getElementById('RisksTable').style.display = 'none'
+        //show/hide content tables
+        document.getElementById('risksTable').style.display = 'none'
         document.getElementById('CreateUpdateForm').style.display = 'block'
+        document.getElementById('archiveTable').style.display = 'none'
+
+        //reset the form if called from within form
+        document.getElementById("rid").value=''
+        document.getElementById("RiskArea").value=''
+        document.getElementById("Risk_Description").value=''
+        document.getElementById("Owner").value=''
+        document.getElementById("RiskLevel").value=''
+        document.getElementById("Review_Frequency").value=''
+        document.getElementById("Last_Review").value=''
+        document.getElementById("Next_Review").value=''
+        document.getElementById("Man_Ctrs").value=''
+        //enable/disable relevant buttons
+        document.getElementById('UpdatetBtn').disabled = true
+        document.getElementById('CreateBtn').disabled = false
+        
+        document.getElementById('category').style.display = 'none'
+        document.getElementById('Category_id').style.display = 'block'
+        //hide/show rows
+        document.getElementById('lblrid').style.display = 'none'
+        document.getElementById('rid').style.display = 'none'          
+        //populate categories drop down
+        getCategories()
+
     }
-    
+    //Show/hide content related to risk update
     function showUpdate(){
         //show view nav grid
         document.getElementById('showRisksBtn').style.background='#0f8d92';
         document.getElementById('showCreateBtn').style.background='#426d6a';
         document.getElementById('showArchiveBtn').style.background='#0f8d92';
-        document.getElementById('showFindRiskBtn').style.background='#0f8d92';
         document.getElementById('showExportRisksBtn').style.background='#0f8d92';
-        
-        document.getElementById('RisksTable').style.display = 'none'        
+        //show/hide content tables
+        document.getElementById('risksTable').style.display = 'none'        
         document.getElementById('CreateUpdateForm').style.display = 'block'
-    }
+        document.getElementById('archiveTable').style.display = 'none'
 
+        //enable/disable relevant buttons
+        document.getElementById('UpdatetBtn').disabled = false
+        document.getElementById('CreateBtn').disabled = true
+      
+        //hide/show form elements
+        document.getElementById('category').style.display = 'block'
+        document.getElementById('Category_id').style.display = 'none'
+        //hide/show rows
+        document.getElementById('lblrid').style.display = 'block'
+        document.getElementById('rid').style.display = 'block'
+    }
+    //Show/hide content related to view risks
     function showViewAll() {   
         //show view nav grid
         document.getElementById('showRisksBtn').style.background='#426d6a';
         document.getElementById('showCreateBtn').style.background='#0f8d92';
         document.getElementById('showArchiveBtn').style.background='#0f8d92';
-        document.getElementById('showFindRiskBtn').style.background='#0f8d92';
         document.getElementById('showExportRisksBtn').style.background='#0f8d92';
-
-        document.getElementById('RisksTable').style.display = 'block'
+        //show/hide content tables
+        document.getElementById('risksTable').style.display = 'block'
         document.getElementById('CreateUpdateForm').style.display = 'none'
-        //call load risks 
+        document.getElementById('archiveTable').style.display = 'none'
+       
         
     }
-function formatdt(date) { //This funciotn lifted from: (js date to string yyyy-mm-dd Code Example, 2021)
-  date = new Date(date);
-  var day = ('0' + date.getDate()).slice(-2);
-  var month = ('0' + (date.getMonth() + 1)).slice(-2);
-  var year = date.getFullYear();
+    //Show/hide content related to arhived risks
+    function showArchive(){
+          
+        //show view nav grid
+        document.getElementById('showRisksBtn').style.background='#0f8d92';
+        document.getElementById('showCreateBtn').style.background='#0f8d92';
+        document.getElementById('showArchiveBtn').style.background='#426d6a';
+        document.getElementById('showExportRisksBtn').style.background='#0f8d92';
+        //show/hide content tables
+        document.getElementById('risksTable').style.display = 'none'
+        document.getElementById('CreateUpdateForm').style.display = 'none'
+        document.getElementById('archiveTable').style.display = 'block'
+        
+        loadArchivedRisks()
+    }
+//function to format dates related to risks
+    function formatdt(date) { //This funciotn lifted from: (js date to string yyyy-mm-dd Code Example, 2021)
+    date = new Date(date);
+    var day = ('0' + date.getDate()).slice(-2);
+    var month = ('0' + (date.getMonth() + 1)).slice(-2);
+    var year = date.getFullYear();
 
-  return year + '-' + month + '-' + day;
-}
+    return day + '-' + month + '-' + year;
+    }
+    function formatdt2(date) { //As above but differnet format to populate form date picker
+    date = new Date(date);
+    var day = ('0' + date.getDate()).slice(-2);
+    var month = ('0' + (date.getMonth() + 1)).slice(-2);
+    var year = date.getFullYear();
+
+    return year + '-' + month + '-' + day;
+    }
     function getRisk(id){
-        //find table
+        //function to find a risk for risk update
+        //using ajax call to REST server and 
         //var tableElement = document.getElementById('RisksTable');
         //the whole row is the parent of the button which is TD and the parent
         //TD which is TR - the row
-        //var rowElement = r.parentNode.parentNode
-        //console.log('RE:' + rowElement.rowIndex);
-        //var index = rowElement.rowIndex;
-        //id = rowElement.getAttribute('id');
-        console.log('in getriskid: ' + id);
         $.ajax({
+            //URL with GET method will get the find risk function on server/DAO
             url:'/risks/'+ id,
             method: 'GET',
             dataType:'JSON',
             success:function(returnArray){
-                //console.log("Return:" + returnArray)
+                console.log("Return:" + returnArray)
                 for (risk of returnArray){
                    //return(risk);
                    var form = document.getElementById('CreateUpdateForm')
-                    console.log(risk.rid);
+                    //populate CreateUpdateForm
                     form.querySelector("input[name='id']").value=risk.id
                     form.querySelector("input[name='rid']").value=risk.rid
-                    form.querySelector("input[name='Category']").value=risk.Category 
-                    form.querySelector("input[name='RiskLevel']").value=risk.RiskLevel 
+                    form.querySelector("input[name='category']").value=risk.category
+                    form.querySelector("input[name='RiskLevel']").value=risk.risklevel 
                     form.querySelector("input[name='Owner']").value =risk.Owner 
-                    form.querySelector("input[name='Next_Review']").value=formatdt(risk.Next_Review)
-                    document.getElementById('Last_Review').value=formatdt(risk.Last_Review )
+                    form.querySelector("textarea[name='Risk_Description']").value =risk.Risk_Description 
+                    form.querySelector("textarea[name='Man_Ctrs']").value =risk.Man_Ctrs
+                    form.querySelector("input[name='Next_Review']").value=formatdt2(risk.Next_Review)
+                    document.getElementById('Last_Review').value=formatdt2(risk.Last_Review )
                     document.getElementById('Review_Frequency').value=risk.Review_Frequency 
                     form.querySelector("input[name='RiskArea']").value=risk.RiskArea  
                     document.getElementById('Likelihood').value=risk.Likelihood
-                    document.getElementById('Impact').value=risk.Impact     
+                    document.getElementById('Impact').value=risk.Impact 
+                    document.getElementById('Archive').value=risk.Archive     
                     //document.getElementById('Archive').value=risk.Archive  
                     }
                 },
@@ -211,9 +293,9 @@ function formatdt(date) { //This funciotn lifted from: (js date to string yyyy-m
     }
 
     function getUpdate(r){
-        console.log('in show update')
-        //find table
-        var tableElement = document.getElementById('RisksTable');
+        //find the risk id in the table
+        var tableElement = document.getElementById('risksTable');
+        //console.log("in get update")
         //the whole row is the parent of the button which is TD and the parent
         //TD which is TR - the row
         var rowElement = r.parentNode.parentNode;
@@ -224,17 +306,16 @@ function formatdt(date) { //This funciotn lifted from: (js date to string yyyy-m
         risk=getRisk(id);
         console.log(risk);
         
-        ////////////////////
-        tableElem = document.getElementById('RisksTable')
+        tableElem = document.getElementById('risksTable')
         rowElem = tableElem.insertRow(-1)
         //rowElem.setAttribute('id',risk.id)
+        //show the risk to be updated in form
         showUpdate()
-
-        
-
     }
     function doUpdate(){
+        //get the updated risk off the form
         risk = getRiskFromForm()
+        //URL with PUT method will call the update function on server/DAO
         $.ajax({
             url:'/risks/'+risk.id,
             data:JSON.stringify(risk),
@@ -242,8 +323,8 @@ function formatdt(date) { //This funciotn lifted from: (js date to string yyyy-m
             dataType:'JSON',
             contentType: 'application/json; charset=utf-8',
             success:function(result){
-                console.log('update risk here'+ result)
-                addRisktoTable(risk);
+                //get risks and show risks                             
+                loadRisks()
                 showViewAll()
                 },
             error:function(xhr,status,error){
@@ -253,7 +334,9 @@ function formatdt(date) { //This funciotn lifted from: (js date to string yyyy-m
     }
     function doCreate() {
         console.log('docreate')
+        //get risk from form
         risk = getRiskFromForm()
+        //URL with the POST method will call the create function on server/DAO
         $.ajax({
             url:'/risks',
             data:JSON.stringify(risk),
@@ -262,7 +345,8 @@ function formatdt(date) { //This funciotn lifted from: (js date to string yyyy-m
             contentType: 'application/json; charset=utf-8',
             success:function(result){
                 console.log('add risk here'+ result)
-                addRisktoTable(risk);
+                //get risks and show risks   
+                loadRisks()
                 showViewAll()
                 },
             error:function(xhr,status,error){
@@ -271,12 +355,12 @@ function formatdt(date) { //This funciotn lifted from: (js date to string yyyy-m
         })                   
     }
     function doDelete(r){
-        //find table
-        var tableElement = document.getElementById('RisksTable');
+        //find risk id in the table
+        var tableElement = document.getElementById('archiveTable');
         //the whole row is the parent of the button which is TD and the parent
         //TD which is TR - the row
         var rowElement = r.parentNode.parentNode
-        console.log('RE:' + rowElement.rowIndex);
+        //console.log('RE:' + rowElement.rowIndex);
         var index = rowElement.rowIndex;
         id = rowElement.getAttribute('id');
         console.log('ID: ' + id);
@@ -304,31 +388,43 @@ function formatdt(date) { //This funciotn lifted from: (js date to string yyyy-m
         if (getRiskFromForm.caller.name ='doUpdate' ) {
             //risk.Archive = form.querySelector("input[name='Archive']"").value
             risk.id = form.querySelector("input[name='id']").value
-            risk.NextReview = form.querySelector("input[name='Next_Review']").value
+            risk.Next_Review = form.querySelector("input[name='Next_Review']").value
         }
        
         risk.rid = form.querySelector("input[name='rid']").value
-        risk.Category =  form.querySelector("input[name='Category']").value
+        risk.Category_id = document.getElementById('Category_id').value
         risk.RiskArea = form.querySelector("input[name='RiskArea']").value
         risk.Risk_Description =  form.querySelector("textarea[name='Risk_Description']").value
         risk.Owner = form.querySelector("input[name='Owner']").value
         risk.Review_Frequency = 'daily'
         risk.Impact = form.querySelector("select[name='Impact']").value
         risk.Likelihood = form.querySelector("select[name='Likelihood']").value
-        risk.Man_Ctrs = form.querySelector("input[name='Man_Ctrs']").value
-        
+        risk.Last_Review = form.querySelector("input[name='Last_Review']").value
+        risk.Man_Ctrs = form.querySelector("textarea[name='Man_Ctrs']").value
+        //
+        var Arc=form.querySelector("input[name='Archive']").checked ;
+        if (Arc == true){
+            risk.Archive = 1
+        }else{
+            risk.Archive = 0
+        }
+        //risk.Archive = form.querySelector("input[name='Archive']").value
         console.log(JSON.stringify(risk))
-        return risk   
+        return risk     
     }
     
    
     function loadRisks(){
-        //ajax call getAll
+        //empty table first
+        clearTable("risksTable")
+               //ajax call to getAll
+        //URL with GET method will get all risks function from server
         $.ajax({
             url:'http://127.0.0.1:5000/risks',
             method: 'GET',
             dataType:'JSON',
             success:function(returnArray){
+                console.log("loading")
                 console.log(returnArray)
                     for (risk of returnArray){
                         addRisktoTable(risk);
@@ -337,26 +433,94 @@ function formatdt(date) { //This funciotn lifted from: (js date to string yyyy-m
             error:function(xhr,status,error){
                 console.log('Error:'+ error + 'Code: '+ status)
             }
-        })
-            //local risk for debugging
-        risk = {
-
-            id:123,
-            rid:'C001',
-            Category:'Schools',
-            Risk_Description:'first risk',
-            Owner:'DFET',
-            RiskLevel:'Severe',
-            Next_Review:'01/01/2022',
-                
-            }
-         
-            
-
+            })
         }
+    function clearTable(table){
+        //function to clear table contents before reloading
+        //(Javascript and Hufford, 2021)
+        var mytbl = document.getElementById(table);
+        for(var i = 3;i<mytbl.rows.length;){
+            mytbl.deleteRow(i);
+        }
+        
+
+
+    }
+    function loadArchivedRisks(){
+        //ajax call to getAll
+        //ajax call getAll
+        //URL with GET method will call archived risks function from server
+        
+        $.ajax({
+            url:'http://127.0.0.1:5000/risks/a',
+            method: 'GET',
+            dataType:'JSON',
+            success:function(returnArray){
+                console.log(returnArray)
+                    for (risk of returnArray){
+                        addRiskArchivetoTable(risk);
+                }
+            },
+            error:function(xhr,status,error){
+                console.log('Error:'+ error + 'Code: '+ status)
+            }
+        })
+       
+        }
+    
+    function getCategories(){
+             //ajax call getAll categories and populate form select options
+        $.ajax({
+            url:'http://127.0.0.1:5000/risks/c',
+            method: 'GET',
+            dataType:'JSON',
+            success:function(returnArray){
+               
+
+                //reset options
+                document.getElementById("Category_id").options.length = 0;
+                //add to form select adapted from (javascript, Thomas and Vidas, 2021)
+                select = document.getElementById('Category_id');
+                    i = 1
+                    for (cat of returnArray){
+                        var opt = document.createElement('option');
+                        opt.value = i;
+                        opt.innerHTML = cat.Category;
+                        select.appendChild(opt);
+                        i++;
+                }
+            },
+            error:function(xhr,status,error){
+                console.log('Error:'+ error + 'Code: '+ status)
+            }
+            })
+        }
+    //function to used to add risks to the show risks 
     function addRisktoTable(risk){
+        //console.log('ad_RisktoTable: ' + risk.rid)
+        tableElem = document.getElementById('risksTable')
+        rowElem = tableElem.insertRow(-1)
+        rowElem.setAttribute('id',risk.id)
+        cell1=rowElem.insertCell(0)
+        cell1.innerHTML = risk.rid
+        cell2=rowElem.insertCell(1)
+        cell2.innerHTML = risk.category
+        cell3=rowElem.insertCell(2)
+        cell3.innerHTML = risk.Risk_Description
+        cell4=rowElem.insertCell(3)
+        cell4.innerHTML = risk.Owner
+        cell5=rowElem.insertCell(4)
+        cell5.innerHTML = risk.risklevel
+        cell6=rowElem.insertCell(5)
+        cell6.innerHTML = formatdt(risk.Next_Review)
+        cell7=rowElem.insertCell(6)
+        cell7.innerHTML = "<button  class='btnSmall' onclick='getUpdate(this)'>Update</button>"
+    
+    }
+    //function to used to add risks to the archived risks table 
+    function addRiskArchivetoTable(risk){
         console.log('ad_RisktoTable: ' + risk.rid)
-        tableElem = document.getElementById('RisksTable')
+        tableElem = document.getElementById('archiveTable')
         rowElem = tableElem.insertRow(-1)
         rowElem.setAttribute('id',risk.id)
         cell1=rowElem.insertCell(0)
@@ -368,7 +532,7 @@ function formatdt(date) { //This funciotn lifted from: (js date to string yyyy-m
         cell4=rowElem.insertCell(3)
         cell4.innerHTML = risk.Owner
         cell5=rowElem.insertCell(4)
-        cell5.innerHTML = risk.RiskLevel
+        cell5.innerHTML = risk.risklevel
         cell6=rowElem.insertCell(5)
         cell6.innerHTML = formatdt(risk.Next_Review)
         cell7=rowElem.insertCell(6)
