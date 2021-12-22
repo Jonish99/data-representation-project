@@ -4,7 +4,7 @@
 
 CREATE TABLE Risks(
 id int AUTO_INCREMENT NOT NULL , 
-rid varchar(6) NOT NULL,
+rid varchar(12) NOT NULL,
 Risk_Description MEDIUMTEXT NOT NULL, 
 RiskLevel INT, 
 Owner varchar(50),
