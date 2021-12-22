@@ -7,7 +7,12 @@
 #import connector library to enable server to connect to database
 import mysql.connector
 import dbconfig as cfg
+from dateutil.relativedelta import relativedelta
+from datetime import datetime
 from flask import jsonify
+from dateutil import parser
+#################################################
+
 
 ##############################################
 class RisksDAO:
@@ -56,37 +61,70 @@ class RisksDAO:
         return rid
  ##############################################
     #calculate level serverside
-    def createRiskLevelID(self,impact,likelihood):
+    def getRiskLevelID(self,impact,likelihood):
         #print(impact)
         rlid = int(impact)*int(likelihood)
         return rlid
+ ##############################################
+    #calculate level serverside
+    def getRevFreq(self,impact,likelihood):
+        #print(impact)
+        rlid = int(impact)*int(likelihood)
+        if rlid < 6:
+            freq = 'Annually'
+        elif rlid < 9:
+            freq = 'Bi-annually'
+        else:
+            freq = 'Quarterly'
+        return freq
+ ##############################################
+    #def getLastReview(self,LastReview): #(How to Format Dates in Python, 2021)
+    #    dt = parser.parse(LastReview)
+    #    return dt
+  ##############################################           
+    def getNextReview(self,LastReview,impact,likelihood) :
+        lastreview = dt = parser.parse(LastReview)
+        print('In last review' + str(lastreview))
+        #method for adding months to dates > (python?, Stocks and Ragazzi, 2021)
+        three_mon_rel = relativedelta(months=3)
+        rlid = int(impact)*int(likelihood)
+        print('rlid:'+str(rlid))
+        if rlid >  8:
+            nextreview = lastreview + three_mon_rel
+        elif (rlid > 5 and rlid < 9):
+            nextreview = lastreview + relativedelta(months=6)
+        else: #less than 12
+            nextreview = lastreview + relativedelta(months=12)
+        print("In get Next review: " + str(nextreview))
+        return nextreview
  ##############################################
     def createRisk(self,risk):
         #print('In DAO')
         #print (jsonify(risk))
         #also create new risk from previousids.
-        cursor = self.db.cursor()#think about where to calculate risklevel CS/SS
+        cursor = self.db.cursor()
         #last review not needed on creation
         #create sql string, parameterise values to avoid sql injection
         #print(risk)
         rid = self.createRid(risk['Category_id'])
         sql='INSERT INTO risks (rid,Risk_Description,Category_id,RiskLevel_id,Owner,\
-            Review_Frequency,RiskArea,Man_Ctrs,Impact,Likelihood) VALUES (%s,%s,%s,%s\
-            ,%s,%s,%s,%s,%s,%s);'
+            Review_Frequency,RiskArea,Man_Ctrs,Impact,Likelihood,Last_Review,Next_Review) VALUES (%s,%s,%s,%s\
+            ,%s,%s,%s,%s,%s,%s,%s,%s);'
         values = [
             self.createRid(risk['Category_id']),
             risk['Risk_Description'],
             risk['Category_id'],
-            self.createRiskLevelID(risk['Impact'],risk['Likelihood']),
+            self.getRiskLevelID(risk['Impact'],risk['Likelihood']),
             risk['Owner'],
-            risk['Review_Frequency'],
+            self.getRevFreq(risk['Impact'],risk['Likelihood']),
             risk['RiskArea'],
             risk['Man_Ctrs'],
             risk['Impact'],
             risk['Likelihood'],
-            
+            risk['Last_Review'],
+            self.getNextReview(risk['Last_Review'],risk['Impact'],risk['Likelihood'])
             ]
-        #print(sql)
+               #print(sql)
         #print(values)
         #return risk['Risk_Description']
         cursor.execute(sql,values)
@@ -107,9 +145,9 @@ class RisksDAO:
         values = [            
             risk['Risk_Description'],
             risk['Category_id'],
-            self.createRiskLevelID(risk['Impact'],risk['Likelihood']),
-            risk['Owner'],
-            risk['Next_Review'],
+            self.getRiskLevelID(risk['Impact'],risk['Likelihood']),
+            risk['Owner'],                     
+            self.getNextReview(risk['Last_Review'],risk['Impact'],risk['Likelihood']),
             risk['Last_Review'],
             risk['Review_Frequency'],
             risk['RiskArea'],
@@ -158,7 +196,7 @@ class RisksDAO:
             Category_id = cid \
             LEFT OUTER JOIN risklevel on \
             rlid=RiskLevel_id \
-            ORDER BY Next_Review asc;'
+            WHERE Archive = 0 ORDER BY Next_Review asc;'
         
         cursor.execute(sql)#pass sql to cursor
         results= cursor.fetchall()#return conents of cursor
@@ -172,7 +210,12 @@ class RisksDAO:
  ##############################################  
     def getArchiveRisks(self):
         cursor = self.db.cursor()#get cursor
-        sql='SELECT * FROM risks  LEFT OUTER JOIN Category on Category_id = cid where Archive =1;' 
+        sql='SELECT * FROM risks \
+            LEFT OUTER JOIN Category on \
+            Category_id = cid \
+            LEFT OUTER JOIN risklevel on \
+            rlid=RiskLevel_id \
+            WHERE Archive = 1 ORDER BY Next_Review asc;' 
         cursor.execute(sql)#pass sql to cursor
         results= cursor.fetchall()#return conents of cursor
         returnArray=[]#create array to contain returnedbooks
@@ -225,9 +268,11 @@ class RisksDAO:
             'Owner','Next_Review','Last_Review',\
             'Review_Frequency','RiskArea','Man_Ctrs',\
             'Impact', 'Likelihood','Archive','cid','Category_id','category','rlid','risklevel',]
+        #create dict
         risk={}
-        #print('in dict')
+        
         if result:
+            #find colnames in result, value = next value
             for i, colname in enumerate(colnames):
                 value = result[i]
                 risk[colname]=value
@@ -240,6 +285,7 @@ class RisksDAO:
         colnames=['cid','Category']
         cat={}
         if result:
+            #find colnames in result, value = next value
             for i, colname in enumerate(colnames):
                 value = result[i]
                 cat[colname]=value

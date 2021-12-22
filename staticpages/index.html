@@ -37,9 +37,9 @@
         <table class='tables' id='CreateUpdateForm' style='display:none'>
      
             
-                
+                <tr><th colspan=2 width=100%>Create/Edit/View Risk</th></tr>
                 <tr id='Rwrid'>
-                    <td id=lblrid>Risk ID: </td>
+                    <td>Risk ID: </td>
                     <td>
                         <!--hidden id attribute for risk update-->
                         <input type='hidden' name='id' value =''>
@@ -56,7 +56,7 @@
                     </td>
                 </tr>  
                 <tr>
-                    <td>Description: </td><td><textarea id ='Risk_Description' name='Risk_Description' ></textarea>
+                    <td>Description: </td><td><textarea id ='Risk_Description' name='Risk_Description' cols='55' rows='8'></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -86,7 +86,7 @@
                         <input id ='RiskLevel' name ='RiskLevel' type='text' tabindex="-1" ></td>
                 </tr>
                 <tr  id='RwReview_Frequency'>
-                    <td>Review Frequency: </td><td><input id ='Review_Frequency' name ='Review_Frequency' type='text'></td>
+                    <td>Review Frequency: </td><td><input id ='Review_Frequency' name ='Review_Frequency' type='text'  tabindex="-1" ></td>
                 </tr>
              
                 <tr>
@@ -96,7 +96,7 @@
                     <td>Next Review: </td><td><input id='Next_Review' name='Next_Review' type='date'></td>
                 </tr>
                 <tr>
-                    <td>Managment controls: </td><td><textarea id ='Man_Ctrs' name='Man_Ctrs' ></textarea>
+                    <td>Managment controls: </td><td><textarea id ='Man_Ctrs' name='Man_Ctrs'  cols='55' rows='8'></textarea>
                     </td>
                 </tr>
                 <tr  id='RwArchive' >
@@ -167,9 +167,13 @@
         document.getElementById("Owner").value=''
         document.getElementById("RiskLevel").value=''
         document.getElementById("Review_Frequency").value=''
-        document.getElementById("Last_Review").value=''
+        
+        document.getElementById("Last_Review").value=dtToday()
         document.getElementById("Next_Review").value=''
         document.getElementById("Man_Ctrs").value=''
+        document.getElementById("Archive").checked = false;// Uncheck
+        
+        
         //enable/disable relevant buttons
         document.getElementById('UpdatetBtn').disabled = true
         document.getElementById('CreateBtn').disabled = false
@@ -177,7 +181,7 @@
         document.getElementById('category').style.display = 'none'
         document.getElementById('Category_id').style.display = 'block'
         //hide/show rows
-        document.getElementById('lblrid').style.display = 'none'
+       
         document.getElementById('rid').style.display = 'none'          
         //populate categories drop down
         getCategories()
@@ -203,7 +207,7 @@
         document.getElementById('category').style.display = 'block'
         document.getElementById('Category_id').style.display = 'none'
         //hide/show rows
-        document.getElementById('lblrid').style.display = 'block'
+        
         document.getElementById('rid').style.display = 'block'
     }
     //Show/hide content related to view risks
@@ -249,8 +253,19 @@
     var day = ('0' + date.getDate()).slice(-2);
     var month = ('0' + (date.getMonth() + 1)).slice(-2);
     var year = date.getFullYear();
-
+    
     return year + '-' + month + '-' + day;
+    }
+    function dtToday(){
+        //function to get date and format for form date picker (JavaScript?, Meddows and Natraaj, 2021)
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        today = yyyy + '-' + mm + '-' + dd;
+        return today
+
+    
     }
     function getRisk(id){
         //function to find a risk for risk update
@@ -282,7 +297,14 @@
                     form.querySelector("input[name='RiskArea']").value=risk.RiskArea  
                     document.getElementById('Likelihood').value=risk.Likelihood
                     document.getElementById('Impact').value=risk.Impact 
-                    document.getElementById('Archive').value=risk.Archive     
+                    
+                    var Arc=form.querySelector("input[name='Archive']").checked ;
+                    if (risk.Archive==1){
+                        Arc=true
+                    }else{
+                        Arc=false
+                    }
+                    
                     //document.getElementById('Archive').value=risk.Archive  
                     }
                 },
@@ -385,13 +407,21 @@
 
         console.log("CALLER is"+ getRiskFromForm.caller.name)
         //get more data if caller is update
-        if (getRiskFromForm.caller.name ='doUpdate' ) {
+        if (getRiskFromForm.caller.name =='doUpdate' ) {
             //risk.Archive = form.querySelector("input[name='Archive']"").value
+            console.log("In if")
             risk.id = form.querySelector("input[name='id']").value
             risk.Next_Review = form.querySelector("input[name='Next_Review']").value
+            risk.rid = form.querySelector("input[name='rid']").value
+            var Arc=form.querySelector("input[name='Archive']").checked 
+            if (Arc == true){
+                risk.Archive = 1
+            }else{
+                risk.Archive = 0
+            }
         }
        
-        risk.rid = form.querySelector("input[name='rid']").value
+        
         risk.Category_id = document.getElementById('Category_id').value
         risk.RiskArea = form.querySelector("input[name='RiskArea']").value
         risk.Risk_Description =  form.querySelector("textarea[name='Risk_Description']").value
@@ -401,13 +431,8 @@
         risk.Likelihood = form.querySelector("select[name='Likelihood']").value
         risk.Last_Review = form.querySelector("input[name='Last_Review']").value
         risk.Man_Ctrs = form.querySelector("textarea[name='Man_Ctrs']").value
-        //
-        var Arc=form.querySelector("input[name='Archive']").checked ;
-        if (Arc == true){
-            risk.Archive = 1
-        }else{
-            risk.Archive = 0
-        }
+        
+        
         //risk.Archive = form.querySelector("input[name='Archive']").value
         console.log(JSON.stringify(risk))
         return risk     
@@ -427,7 +452,7 @@
                 console.log("loading")
                 console.log(returnArray)
                     for (risk of returnArray){
-                        addRisktoTable(risk);
+                        addRisktoTable(risk,'risksTable');
                 }
             },
             error:function(xhr,status,error){
@@ -447,6 +472,8 @@
 
     }
     function loadArchivedRisks(){
+        //empty table first
+        clearTable("archiveTable")
         //ajax call to getAll
         //ajax call getAll
         //URL with GET method will call archived risks function from server
@@ -458,7 +485,7 @@
             success:function(returnArray){
                 console.log(returnArray)
                     for (risk of returnArray){
-                        addRiskArchivetoTable(risk);
+                        addRisktoTable(risk,'archiveTable');
                 }
             },
             error:function(xhr,status,error){
@@ -495,10 +522,22 @@
             }
             })
         }
+    function trimDesciption(string){
+        //(Javascript?, 2021)
+        var length = 200;
+        
+        if (string.length > length){
+            var trimmedString =string.substring(0, length - 3) + "..." 
+            return trimmedString
+        }else{
+            return string
+        }
+    }
+        
     //function to used to add risks to the show risks 
-    function addRisktoTable(risk){
-        //console.log('ad_RisktoTable: ' + risk.rid)
-        tableElem = document.getElementById('risksTable')
+    function addRisktoTable(risk,rk_table){
+        //console.log('ad_RisktoTable: ' + risk.rid)risksTable
+        tableElem = document.getElementById(rk_table)
         rowElem = tableElem.insertRow(-1)
         rowElem.setAttribute('id',risk.id)
         cell1=rowElem.insertCell(0)
@@ -506,7 +545,7 @@
         cell2=rowElem.insertCell(1)
         cell2.innerHTML = risk.category
         cell3=rowElem.insertCell(2)
-        cell3.innerHTML = risk.Risk_Description
+        cell3.innerHTML = trimDesciption(risk.Risk_Description)
         cell4=rowElem.insertCell(3)
         cell4.innerHTML = risk.Owner
         cell5=rowElem.insertCell(4)
@@ -515,6 +554,10 @@
         cell6.innerHTML = formatdt(risk.Next_Review)
         cell7=rowElem.insertCell(6)
         cell7.innerHTML = "<button  class='btnSmall' onclick='getUpdate(this)'>Update</button>"
+        if (rk_table=='archiveTable'){
+            cell8=rowElem.insertCell(7)
+            cell8.innerHTML = "<button  class='btnSmall' onclick='doDelete(this)'>Delete</button>"
+        }
     
     }
     //function to used to add risks to the archived risks table 
@@ -537,8 +580,7 @@
         cell6.innerHTML = formatdt(risk.Next_Review)
         cell7=rowElem.insertCell(6)
         cell7.innerHTML = "<button  class='btnSmall' onclick='getUpdate(this)'>Update</button>"
-        cell8=rowElem.insertCell(7)
-        cell8.innerHTML = "<button  class='btnSmall' onclick='doDelete(this)'>Delete</button>"
+        
     }
     showViewAll();
     </script>

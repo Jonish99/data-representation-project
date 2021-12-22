@@ -92,8 +92,15 @@ input[name='rid'] {
 	background-color: #eae9e5;
 	border-style: none;
    }
-   input[name='category'] {
+input[name='category'] {
     pointer-events: none;
 	background-color: #eae9e5;
 	border-style: none;
    }
+input[name='Review_Frequency'] {
+    pointer-events: none;
+	background-color: #eae9e5;
+	border-style: none;
+   }
+
+   
