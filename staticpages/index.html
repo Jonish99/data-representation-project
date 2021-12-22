@@ -21,7 +21,7 @@
                 <button  class='nav-button' id='showArchiveBtn' onclick='showArchive()'>Archive</button>
             </td>
             <td>
-                <button  class='nav-button' id='showExportRisksBtn' onclick='showCreate()'>Export Risk</button></td>
+                <button  class='nav-button' id='showExportRisksBtn' >Export Risk</button></td>
         </tr>
     </table>
   
@@ -115,7 +115,7 @@
                 <tr>
                     <th colspan='7' id='RisksHeader'>Current Risks</th>
                 </tr>
-                <th>Risk ID</th>
+                <th width='15%'>Risk ID</th>
                 <th>Category</th>
                 <th>Description</th>
                 <th>Owner</th>
@@ -146,6 +146,7 @@
 
 
     <script>
+    host = window.location.origin
     loadRisks()
      //Show/hide content related to risk create
     function showCreate(){  
@@ -206,6 +207,7 @@
         //hide/show form elements
         document.getElementById('category').style.display = 'block'
         document.getElementById('Category_id').style.display = 'none'
+        document.getElementById("Archive").checked = false;// Uncheck
         //hide/show rows
         
         document.getElementById('rid').style.display = 'block'
@@ -275,7 +277,7 @@
         //TD which is TR - the row
         $.ajax({
             //URL with GET method will get the find risk function on server/DAO
-            url:'/risks/'+ id,
+            url:host+'/risks/'+ id,
             method: 'GET',
             dataType:'JSON',
             success:function(returnArray){
@@ -339,7 +341,7 @@
         risk = getRiskFromForm()
         //URL with PUT method will call the update function on server/DAO
         $.ajax({
-            url:'/risks/'+risk.id,
+            url:host+'/risks/'+risk.id,
             data:JSON.stringify(risk),
             method: 'PUT',
             dataType:'JSON',
@@ -360,7 +362,7 @@
         risk = getRiskFromForm()
         //URL with the POST method will call the create function on server/DAO
         $.ajax({
-            url:'/risks',
+            url:host+'/risks',
             data:JSON.stringify(risk),
             method: 'POST',
             dataType:'JSON',
@@ -387,7 +389,7 @@
         id = rowElement.getAttribute('id');
         console.log('ID: ' + id);
         $.ajax({
-            url:'/risks/'+id,
+            url:host+'/risks/'+id,
             method:'DELETE',
             success:function(result){
                 tableElement.deleteRow(index);   
@@ -445,7 +447,7 @@
                //ajax call to getAll
         //URL with GET method will get all risks function from server
         $.ajax({
-            url:'http://127.0.0.1:5000/risks',
+            url:host+'/risks',
             method: 'GET',
             dataType:'JSON',
             success:function(returnArray){
@@ -479,7 +481,7 @@
         //URL with GET method will call archived risks function from server
         
         $.ajax({
-            url:'http://127.0.0.1:5000/risks/a',
+            url:host+'/risks/a',
             method: 'GET',
             dataType:'JSON',
             success:function(returnArray){
@@ -498,7 +500,7 @@
     function getCategories(){
              //ajax call getAll categories and populate form select options
         $.ajax({
-            url:'http://127.0.0.1:5000/risks/c',
+            url:host+'/risks/c',
             method: 'GET',
             dataType:'JSON',
             success:function(returnArray){

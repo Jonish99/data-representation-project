@@ -1,48 +1,46 @@
-# data-representation-project
-Jon Ishaque GMIT  G00398244: 
+# Data-representation-project
+Jon Ishaque GMIT  G00398244:
+December 2021
 
 ## The Risk Register
-This project is a attempt to replicate a MS Access application in my work place with the context of the assigmen brief.
+This project is an attempt to replicate a MS Access application in my work place within the context of the assignment brief.
 
-The purpose of the risk register is to allow the director of corporate service to assess risks to organisation activity and put into place control measures and periodically review the risks
+The purpose of the *Risk Register* is to enable the Director of Corporate Services to assess risks to organisation activity,put into place control measures and periodically review the risks. Access was originally chosen as features of Access made it more suitable to the project. 
 
-Functionality included:
-Archiving of risks rather deleting risks(in the context of the assigment, once risks are achived, they can they then be deleted.)
-Highlighting risks due for review. The frequency of risk review is determined by the Risk level, this in turn is a function of likelihood and impact of the risk. 
+### Functionality included:
+*Archiving* of risks rather deleting risks(in the context of the assignment, once risks are archived, they can they then be deleted.)
 
-On ids: The applications has a unique id for risks on the database and this used for under the cover access of the risk. However, an addional risk id exists for the application users giving meaning to a risk by number and prefix. This is generated from the risk category. This funcionality relies on 
+The frequency of risk review is determined by the risk level, this in turn is a function of likelihood and impact of the risk. This then applied to date of last review (default creation date) and the next review date is generated
 
-Because my risks have server side processing, such as rid, frequency etc, and reviewdates the risk register reloads the risks list from the server  after a new risk is added or a risk is updated.
+#### On ids:
+The application has a unique id for risks on the database and this is used for under the cover access of the risk. However, an additional risk id (rid) exists for the application users giving meaning to a risk by number and prefix. This is generated from the risk category. 
 
-Content
-nav-table
-CreateUpdateRisks
-ListRisks
-ListArchiveRisks
+The risks have some server side processing, such as generate rid, frequency etc, and review dates the risk register reloads the risks list from the server after a new risk is added or a risk is updated, rather copying the risk to the to the main risks or archive tables.
 
-JavaScript Functions
-showCreate()
-showUpdate()
-showViewAll()
-showArchive()
+The export risks function has not been implemented. Possibly within scope of the assignment however time did not allow. The intention is to export risks to formatted excel .xlxs files.
 
-getRisk(id)
+The highlighting of due risks has also not been implemented.
 
-getUpdate(r)
-loadRisks()
-doUpdate()
-doCreate()
-doDelete(r)
-loadRisks()
-loadArchivedRisks()
+Transferring from the Access database raised some observations, for example the look up tables suited the way Access worked. In fact they could be dictionaries in the html file.
 
-getCategories()
-formatdt(date)
+As a working model the application is not complete. The plan now is to take this prototype to the project sponsor and work towards an enhanced register, making better use of potential developed in this unit. They are aware that it is coming, and IT Services have agreed to hosting it!. On reflection there should be a health warning with real projects. 
 
-addRisktoTable(risk)
-addRiskArchivetoTable(risk)
+The application the following python libraries:
 
-getRiskFromForm()
+dateutil - included with Anaconda or:
+pip3 install python-dateutil or pip install python-dateutil
+datetime is a standard python library
+flask is included with Anaconda or:
+pip install Flask
+
+
+To run the code, you must have MySQL on the host machine.
+The file tables.sql contains contains SQL commands to:
+Create the database
+Create tables
+and Create Essential content for look up tables.
+
+
 
 ## References:
 

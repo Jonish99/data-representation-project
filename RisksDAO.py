@@ -5,6 +5,7 @@
 
 
 #import connector library to enable server to connect to database
+
 import mysql.connector
 import dbconfig as cfg
 from dateutil.relativedelta import relativedelta
@@ -26,38 +27,53 @@ class RisksDAO:
         )   
       
 
-    ##############################################   
+ ##############################################   
     def id_to_prefix(self,argument):
-        #function to get rid prefix from dictionary
-        
+        #function to get 'rid' prefix from dictionary
         #(Switch Case in Python (Replacement) - GeeksforGeeks, 2021)
         switcher = {           
-            1: 'BC/',
-            2: 'C/',
-            3: 'F/',
-            4: 'L/',
-            5: 'L/R/',
-            6: 'PHSW/',
-            7: 'P/',
-            8: 'S/',
-            9:'S/T/A'
-            }
+        1: 'BC/',
+        2: 'C/',
+        3: 'F/',
+        4: 'L/',
+        5: 'L/R/',
+        6: 'PHSW/',
+        7: 'P/',
+        8: 'S/',
+        9:'S/T/A'
+        }
         return switcher.get(int(argument), '??')
   ##############################################
     def createRid(self,Category_id):
         #function to create a the rid from risk category_id        
         cursor = self.db.cursor()        
-        sql = 'SELECT count(*) FROM risks WHERE Category_id = (%s)'
+        sql = 'SELECT max(rid) FROM risks WHERE Category_id = (%s)'
         values=(Category_id,)
         try:
             cursor.execute(sql,values)
         except Exception as e:
             print(e)
-        count = cursor.fetchone()
-        count1 = count[0]
-        print(count1)
+        maxID = cursor.fetchone()
+        maxID1 = maxID[0]
+        #check for rid values!
+        if maxID1:          
+            #get number from maxid
+            MaxNum=int(''.join(filter(str.isdigit, maxID1)))
+        else:
+            MaxNum = 0
+
+        NewNum = MaxNum+1
+        NewNum1 = str(NewNum)
+        print(NewNum1)
+        #ensure numeric value string is always same length for max db sort above
+        while len(str(NewNum1)) <3: 
+            print(len(NewNum1))
+            NewNum1 = '0'+ str(NewNum1)
+
+        #get category prefix
         pfx = str(self.id_to_prefix(Category_id))
-        rid= pfx + str(count1+1)
+        rid= pfx + NewNum1
+        print(rid)
         return rid
  ##############################################
     #calculate level serverside
@@ -99,8 +115,7 @@ class RisksDAO:
         return nextreview
  ##############################################
     def createRisk(self,risk):
-        #print('In DAO')
-        #print (jsonify(risk))
+        
         #also create new risk from previousids.
         cursor = self.db.cursor()
         #last review not needed on creation
