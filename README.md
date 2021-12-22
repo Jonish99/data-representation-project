@@ -44,10 +44,15 @@ You will also need to configure a dbconfig.py file
 in the following format:
 
 mysql = {
+        
         'host':Yourhost,
+
         'user':yourusername,
+
         'password':yourpassword,
+
         'database':'risk_register'
+
         }
 
 
