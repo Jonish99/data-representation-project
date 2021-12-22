@@ -69,6 +69,7 @@ VALUES
 (2, 'Medium'),
 (3, 'High'),
 (4, 'Very High');
+<<<<<<< HEAD
 
 INSERT INTO risklevel(rlid,risklevel) 
 VALUES
@@ -82,3 +83,5 @@ VALUES
 (9, 'High'),
 (12, 'High'),
 (16, 'High');
+=======
+>>>>>>> 1eebffcb9adb4a83259a5fcd3e1f425ff28c74a7

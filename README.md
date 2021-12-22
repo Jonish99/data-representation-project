@@ -34,11 +34,21 @@ flask is included with Anaconda or:
 pip install Flask
 
 
-To run the code, you must have MySQL on the host machine.
+To run the application, you must have MySQL on the host machine.
 The file tables.sql contains contains SQL commands to:
 Create the database
 Create tables
 and Create Essential content for look up tables.
+
+You will also need to configure a dbconfig.py file
+in the following format:
+
+mysql = {
+        'host':Yourhost,
+        'user':yourusername,
+        'password':yourpassword,
+        'database':'risk_register'
+        }
 
 
 
