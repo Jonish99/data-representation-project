@@ -1,22 +1,23 @@
--- https://en.rakko.tools/tools/36/ - sqlchecker
+-- (MySQL Syntax Checker: Check MySQL syntax error online | RAKKOTOOLS🔧, 2021)
 
-
+Create database Risk_register;
+USE Risk_register;
 
 CREATE TABLE Risks(
 id int AUTO_INCREMENT NOT NULL , 
-rid varchar(6) NOT NULL,
+rid varchar(12) NOT NULL,
 Risk_Description MEDIUMTEXT NOT NULL, 
-RiskLevel INT, 
+RiskLevel_id INT, 
 Owner varchar(50),
-Next_Review DATETIME DEFAULT CURRENT_TIMESTAMP,
+Next_Review DATETIME,
 Last_Review DATE,
-Review_Frequency varchar(23) NOT NULL,
-RiskArea varchar(250) NOT NULL ,
+Review_Frequency varchar(23) ,
+RiskArea varchar(250) ,
 Man_Ctrs varchar(5000),
 Impact INT(2) NOT NULL , 
 Likelihood INT(2) NOT NULL , 
 Archive TINYINT(2) Default 0, 
-Category TINYINT(2) NOT NULL,
+Category_id TINYINT(2) NOT NULL,
 PRIMARY KEY (ID) 
 );
 
@@ -50,9 +51,9 @@ VALUES(1, 'Business Continuity'),
 (3, 'Financial'),
 (4, 'Legal'),
 (5, 'Legislative/Regulatory'),
-(6, 'Physical(SH&W, built enviroment'),
+(6, 'Physical(SH&W, built enviroment)'),
 (7, 'Professional'),
-(8, 'social'),
+(8, 'Social'),
 (9, 'Student/Trainee/Adult Learner');
 
 INSERT INTO impact(iid,impact) 
@@ -68,3 +69,16 @@ VALUES
 (2, 'Medium'),
 (3, 'High'),
 (4, 'Very High');
+
+INSERT INTO risklevel(rlid,risklevel) 
+VALUES
+(0, 'Unknown'),
+(1, 'Low'),
+(2, 'Low'),
+(3, 'Low'),
+(4, 'Low'),
+(6, 'Medium'),
+(8, 'Medium'),
+(9, 'High'),
+(12, 'High'),
+(16, 'High');
