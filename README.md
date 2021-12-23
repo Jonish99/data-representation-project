@@ -55,7 +55,20 @@ mysql = {
 
         }
 
+Files:
 
+In the root directory:
+
+REST_server.py
+
+RiskDAO.py
+
+dbconfig.py(you must create this for your system)
+
+In the static pages:
+
+index.html
+risksStyle.css - essential for full functionality. (The application has been built using the Chrome browser during development).
 
 ## References:
 
